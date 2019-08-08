@@ -10,7 +10,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
-import android.util.Log;
 
 import sarsamurmu.adaptiveicon.utils.ImageUtils;
 import sarsamurmu.adaptiveicon.utils.PathUtils;
@@ -28,10 +27,10 @@ public class AdaptiveIcon {
     Rect pathSize;
     Paint paint;
 
-    double scale = 1.0;
-    int width, height;
-    float fgScale = 1;
-    float offsetX, offsetY;
+    private double scale = 1.0;
+    private int width, height;
+    private float fgScale = 1;
+    private float offsetX, offsetY;
 
     public AdaptiveIcon() {
         paint = new Paint();
@@ -39,25 +38,29 @@ public class AdaptiveIcon {
         paint.setColor(Color.LTGRAY);
         paint.setFilterBitmap(true);
 
+        setScale(0.6);
         setPath(PATH_CIRCLE);
-        Log.d("Icon", "Initialized");
     }
 
-    public void setForeground(Drawable drawable) {
+    public AdaptiveIcon setForeground(Drawable drawable) {
         fgDrawable = drawable;
+        return this;
     }
 
-    public void setBackground(Drawable drawable) {
+    public AdaptiveIcon setBackground(Drawable drawable) {
         bgDrawable = drawable;
+        return this;
     }
 
-    public void setDrawables(Drawable fgDrawableData, Drawable bgDrawableData) {
+    public AdaptiveIcon setDrawables(Drawable fgDrawableData, Drawable bgDrawableData) {
         fgDrawable = fgDrawableData;
         bgDrawable = bgDrawableData;
+        return this;
     }
 
-    public void setScale(double scaleData) {
+    public AdaptiveIcon setScale(double scaleData) {
         scale = scaleData;
+        return this;
     }
 
     public Bitmap getFgBitmap() {
@@ -72,7 +75,7 @@ public class AdaptiveIcon {
         return bgBitmap;
     }
 
-    public void setPath(int pathType) {
+    public AdaptiveIcon setPath(int pathType) {
         path = new Path();
         pathSize = new Rect(0, 0, 50, 50);
         switch (pathType) {
@@ -97,11 +100,13 @@ public class AdaptiveIcon {
                 setPath("M 50,0 A 50,50,0,0 1 100,50 L 100,85 A 15,15,0,0 1 85,100 L 50,100 A 50,50,0,0 1 50,0 z");
                 break;
         }
+        return this;
     }
 
-    public void setPath(String pathData) {
+    public AdaptiveIcon setPath(String pathData) {
         path = PathUtils.createPathFromPathData(pathData);
         pathSize = new Rect(0, 0, 100, 100);
+        return this;
     }
 
     private Boolean isPrepared() {
@@ -111,7 +116,7 @@ public class AdaptiveIcon {
         return false;
     }
 
-    private boolean isScaled(int width, int height) {
+    private Boolean isScaled(int width, int height) {
         return scaledBgBitmap != null && (getFgBitmap() == null || scaledFgBitmap != null) && scaledPath != null && this.width == width && this.height == height;
     }
 

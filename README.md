@@ -22,10 +22,37 @@ implementation 'com.github.sarsamurmu:AdaptiveIconBitmap:-SNAPSHOT'
 ## Simple Usage
 You can Use it like this, main stuff
 ```java
-AdaptiveIcon myAdaptiveIcon = new AdaptiveIcon();
-myAdaptiveIcon.setForeground(YOUR_FOREGROUND_DRAWABLE);
-myAdaptiveIcon.setBackground(YOUR_BACKGROUND_DRAWABLE);
+AdaptiveIcon myIcon = new AdaptiveIcon();
+myIcon.setForeground(FOREGROUND_DRAWABLE);
+myIcon.setBackground(BACKGROUND_DRAWABLE);
 
 // Rendering Bitmap
-Bitmap myIcon = myAdaptiveIcon.render();
+Bitmap renderedIcon = myIcon.render();
+```
+You can use Shorthand for Setting up the Drawables
+```java
+myIcon.setDrawables(FOREGROUND_DRAWABLE, BACKGROUND_DRAWABLE);
+```
+Setting Path
+```java
+myIcon.setPath(path);
+
+// From Predefined Paths
+myIcon.setPath(AdaptiveIcon.PATH_CIRCLE);
+myIcon.setPath(AdaptiveIcon.PATH_SQUIRCLE);
+myIcon.setPath(AdaptiveIcon.PATH_ROUNDED_SQUARE);
+myIcon.setPath(AdaptiveIcon.PATH_SQUARE);
+myIcon.setPath(AdaptiveIcon.PATH_TEARDROP);
+
+// Custom Path
+myIcon.setPath("M 50,0 C 10,0 0,10 0,50 C 0,90 10,100 50,100 C 90,100 100,90 100,50 C 100,10 90,0 50,0 Z");
+```
+Setting Scale
+```java
+myIcon.setScale(double);
+
+// The Large the Number, The Small the Icon
+myIcon.setScale(0.6); // Default
+
+// Max is 1.9 and Min is 0.1
 ```

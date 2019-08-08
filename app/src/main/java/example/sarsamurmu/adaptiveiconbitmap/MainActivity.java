@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 
 import sarsamurmu.adaptiveicon.AdaptiveIcon;
@@ -23,19 +24,30 @@ public class MainActivity extends AppCompatActivity {
         Drawable iconDrawable = getApplicationContext().getDrawable(R.drawable.my_adaptive_icon);
         AdaptiveIconDrawable adaptiveIconDrawable = ((AdaptiveIconDrawable) iconDrawable);
 
-        AdaptiveIcon iconBitmap = new AdaptiveIcon();
-        Drawable foregroundDrawable = adaptiveIconDrawable.getForeground();
-        Drawable backgroundDrawable = adaptiveIconDrawable.getBackground();
+        ImageView squareIcon = (ImageView) findViewById(R.id.square);
+        loadIconToView(adaptiveIconDrawable, AdaptiveIcon.PATH_SQUARE, squareIcon);
 
-        iconBitmap.setForeground(foregroundDrawable);
-        iconBitmap.setBackground(backgroundDrawable);
-        // Instead of setting drawable separately you can use this
-        iconBitmap.setDrawables(foregroundDrawable, backgroundDrawable);
-        iconBitmap.setPath(AdaptiveIcon.PATH_CIRCLE);
-        iconBitmap.setScale(0.6);
-        Bitmap myIco = iconBitmap.render();
+        ImageView roundedSquareIcon = (ImageView) findViewById(R.id.rounded_square);
+        loadIconToView(adaptiveIconDrawable, AdaptiveIcon.PATH_ROUNDED_SQUARE, roundedSquareIcon);
 
-        ImageView iconHolder = (ImageView) findViewById(R.id.iconHolder);
-        iconHolder.setImageBitmap(myIco);
+        ImageView squircleIcon = (ImageView) findViewById(R.id.squircle);
+        loadIconToView(adaptiveIconDrawable, AdaptiveIcon.PATH_SQUIRCLE, squircleIcon);
+
+        ImageView circleIcon = (ImageView) findViewById(R.id.circle);
+        loadIconToView(adaptiveIconDrawable, AdaptiveIcon.PATH_CIRCLE, circleIcon);
+
+        ImageView teardropIcon = (ImageView) findViewById(R.id.teardrop);
+        loadIconToView(adaptiveIconDrawable, AdaptiveIcon.PATH_TEARDROP, teardropIcon);
+    }
+
+    public void loadIconToView(AdaptiveIconDrawable drawable, int path, ImageView view) {
+        Drawable foregroundDrawable = drawable.getForeground();
+        Drawable backgroundDrawable = drawable.getBackground();
+
+        AdaptiveIcon iconBitmap = new AdaptiveIcon()
+                                        .setDrawables(foregroundDrawable, backgroundDrawable)
+                                        .setPath(path);
+
+        view.setImageBitmap(iconBitmap.render());
     }
 }
