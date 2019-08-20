@@ -1,4 +1,6 @@
 # Adaptive Icon Bitmap
+[![Jitpack Badge](https://jitpack.io/v/sarsamurmu/AdaptiveIconBitmap.svg)](https://jitpack.io/#sarsamurmu/AdaptiveIconBitmap)
+
 Get Merged Bitmap from Adaptive Icon's Foreground and Background Drawables.
 
 It's modified from [AdaptiveIconView](https://github.com/fennifith/AdaptiveIconView).
@@ -16,8 +18,9 @@ allprojects {
 ```
 Then add this to your app module's build.gradle
 ```gradle
-implementation 'com.github.sarsamurmu:AdaptiveIconBitmap:-SNAPSHOT'
+implementation 'com.github.sarsamurmu:AdaptiveIconBitmap:$commitHash'
 ```
+Replace `$commitHash` with latest commit hash. Latest is ![Jitpack Badge](https://jitpack.io/v/sarsamurmu/AdaptiveIconBitmap.svg)
 
 ## Simple Usage
 You can Use it like this, main stuff
