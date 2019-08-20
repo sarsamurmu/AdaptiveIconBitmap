@@ -31,6 +31,7 @@ public class AdaptiveIcon {
     private int width, height;
     private float fgScale = 1;
     private float offsetX, offsetY;
+    private int bitmapHeight, bitmapWidth;
 
     public AdaptiveIcon() {
         paint = new Paint();
@@ -40,6 +41,9 @@ public class AdaptiveIcon {
 
         setScale(0.6);
         setPath(PATH_CIRCLE);
+
+        bitmapHeight = 432;
+        bitmapWidth = 432;
     }
 
     public AdaptiveIcon setForeground(Drawable drawable) {
@@ -60,6 +64,12 @@ public class AdaptiveIcon {
 
     public AdaptiveIcon setScale(double scaleData) {
         scale = scaleData;
+        return this;
+    }
+
+    public AdaptiveIcon setSize(int width, int height) {
+        bitmapWidth = width;
+        bitmapHeight = height;
         return this;
     }
 
@@ -157,7 +167,7 @@ public class AdaptiveIcon {
     }
 
     public Bitmap render() {
-        Bitmap fullIcon = Bitmap.createBitmap(432, 432, Bitmap.Config.ARGB_8888);
+        Bitmap fullIcon = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(fullIcon);
 
         if (isPrepared()) {

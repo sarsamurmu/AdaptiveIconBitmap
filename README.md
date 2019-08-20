@@ -33,6 +33,7 @@ You can use Shorthand for Setting up the Drawables
 ```java
 myIcon.setDrawables(FOREGROUND_DRAWABLE, BACKGROUND_DRAWABLE);
 ```
+
 Setting Path
 ```java
 myIcon.setPath(path);
@@ -47,6 +48,7 @@ myIcon.setPath(AdaptiveIcon.PATH_TEARDROP);
 // Custom Path
 myIcon.setPath("M 50,0 C 10,0 0,10 0,50 C 0,90 10,100 50,100 C 90,100 100,90 100,50 C 100,10 90,0 50,0 Z");
 ```
+
 Setting Scale
 ```java
 myIcon.setScale(double);
@@ -55,4 +57,13 @@ myIcon.setScale(double);
 myIcon.setScale(0.6); // Default
 
 // Max is 1.9 and Min is 0.1
+```
+
+Setting Size
+```java
+myIcon.setSize(int width, int height);
+
+
+// Default
+myIcon.setSize(432, 432);
 ```
