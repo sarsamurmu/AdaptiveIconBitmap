@@ -70,3 +70,5 @@ myIcon.setSize(int width, int height);
 // Default
 myIcon.setSize(432, 432);
 ```
+
+Nothing More
