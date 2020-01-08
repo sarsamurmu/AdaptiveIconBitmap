@@ -53,8 +53,8 @@ public class AdaptiveIcon {
         setScale(0.6);
         setPath(PATH_CIRCLE);
 
-        bitmapHeight = 432;
-        bitmapWidth = 432;
+        bitmapHeight = 256;
+        bitmapWidth = 256;
     }
 
     public AdaptiveIcon setForeground(Drawable drawable) {
