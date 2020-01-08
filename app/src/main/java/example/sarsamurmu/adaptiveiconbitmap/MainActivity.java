@@ -50,10 +50,11 @@ public class MainActivity extends AppCompatActivity {
         Drawable backgroundDrawable = drawable.getBackground();
 
         AdaptiveIcon iconBitmap = new AdaptiveIcon()
-                                        .setDrawables(foregroundDrawable, backgroundDrawable)
+                                        .setDrawable(drawable)
                                         .setPath(path);
 
         view.setImageBitmap(iconBitmap.render());
+        //view.setImageBitmap(AdaptiveIcon.render(drawable, getApplicationContext()));
     }
 
     public void saveImages(View v) {
@@ -68,24 +69,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public Bitmap genBitmap(AdaptiveIconDrawable drawable, int path) {
-        Drawable foregroundDrawable = drawable.getForeground();
-        Drawable backgroundDrawable = drawable.getBackground();
-
         AdaptiveIcon iconBitmap = new AdaptiveIcon()
-                .setDrawables(foregroundDrawable, backgroundDrawable)
+                .setDrawable(drawable)
                 .setPath(path)
-                .setSize(192, 192);
+                .setSize(10, 10);
 
         return iconBitmap.render();
+        //return AdaptiveIcon.render(drawable, getApplicationContext());
     }
 
     private void saveImage(Bitmap finalBitmap, String image_name) {
         String root = Environment.getExternalStorageDirectory().toString();
         File myDir = new File(root + "/AdaptiveIconBitmap");
-        myDir.mkdirs();
-        String fname = image_name+ ".png";
+        String fname = image_name + ".png";
         File file = new File(myDir, fname);
-        if (file.exists()) file.delete();
         Log.i("LOAD", root + "/AdaptiveIconBitmap/" + fname);
         try {
             FileOutputStream out = new FileOutputStream(file);

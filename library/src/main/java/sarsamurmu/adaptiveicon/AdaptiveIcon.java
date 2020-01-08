@@ -1,15 +1,25 @@
 package sarsamurmu.adaptiveicon;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.AdaptiveIconDrawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.PaintDrawable;
 import android.media.ThumbnailUtils;
+import android.os.Build;
+import android.util.Log;
 
 import sarsamurmu.adaptiveicon.utils.ImageUtils;
 import sarsamurmu.adaptiveicon.utils.PathUtils;
@@ -36,8 +46,9 @@ public class AdaptiveIcon {
     public AdaptiveIcon() {
         paint = new Paint();
         paint.setAntiAlias(true);
-        paint.setColor(Color.LTGRAY);
+        paint.setColor(Color.BLUE);
         paint.setFilterBitmap(true);
+        //paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
 
         setScale(0.6);
         setPath(PATH_CIRCLE);
@@ -59,6 +70,13 @@ public class AdaptiveIcon {
     public AdaptiveIcon setDrawables(Drawable fgDrawableData, Drawable bgDrawableData) {
         fgDrawable = fgDrawableData;
         bgDrawable = bgDrawableData;
+        return this;
+    }
+
+    @TargetApi(26)
+    public AdaptiveIcon setDrawable(AdaptiveIconDrawable drawable) {
+        fgDrawable = drawable.getForeground();
+        bgDrawable = drawable.getBackground();
         return this;
     }
 
@@ -144,7 +162,6 @@ public class AdaptiveIcon {
     }
 
     private Bitmap getScaledBitmap(Bitmap bitmap, int width, int height) {
-
         if (scale <= 1)
             return ThumbnailUtils.extractThumbnail(bitmap, (int) ((2 - scale) * width), (int) ((2 - scale) * height));
         else if (bitmap.getWidth() > 1 && bitmap.getHeight() > 1) {
@@ -166,6 +183,7 @@ public class AdaptiveIcon {
         return null;
     }
 
+    @SuppressLint("NewApi")
     public Bitmap render() {
         Bitmap fullIcon = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(fullIcon);
@@ -183,7 +201,7 @@ public class AdaptiveIcon {
             }
 
             if (scaledBgBitmap != null) {
-                canvas.drawPath(scaledPath, paint);
+                //canvas.drawPath(scaledPath, paint);
                 canvas.clipPath(scaledPath);
 
                 float dx = width * offsetX * 0.066f;
@@ -210,7 +228,6 @@ public class AdaptiveIcon {
 
             return fullIcon;
         }
-
         return null;
     }
 }

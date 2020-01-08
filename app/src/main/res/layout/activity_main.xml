@@ -9,7 +9,7 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="395dp"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -30,47 +30,54 @@
 
             <ImageView
                 android:id="@+id/square"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:layout_weight="1"
                 tools:srcCompat="@tools:sample/avatars[0]" />
 
             <ImageView
                 android:id="@+id/rounded_square"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:layout_weight="1"
                 tools:srcCompat="@tools:sample/avatars[0]" />
-
-            <ImageView
-                android:id="@+id/squircle"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars[0]" />
-
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/circle"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:layout_weight="1"
                 tools:srcCompat="@tools:sample/avatars[0]" />
 
             <ImageView
-                android:id="@+id/teardrop"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:id="@+id/squircle"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:layout_weight="1"
                 tools:srcCompat="@tools:sample/avatars[0]" />
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/teardrop"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                tools:srcCompat="@tools:sample/avatars[0]" />
         </LinearLayout>
     </LinearLayout>
 
