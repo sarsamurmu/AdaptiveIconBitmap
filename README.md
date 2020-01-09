@@ -1,13 +1,13 @@
 # Adaptive Icon Bitmap
 [![Jitpack Badge](https://jitpack.io/v/sarsamurmu/AdaptiveIconBitmap.svg)](https://jitpack.io/#sarsamurmu/AdaptiveIconBitmap)
 
-Get Merged Bitmap from Adaptive Icon's Foreground and Background Drawables.
+Get merged bitmap from adaptive icon's foreground and background drawables.
 
 It's modified from [AdaptiveIconView](https://github.com/fennifith/AdaptiveIconView).
 
 # Usage
 ## Setup
-Make sure your root build.gradle has this
+Make sure your root `build.gradle` has this
 ```gradle
 allprojects {
   repositories {
@@ -16,59 +16,64 @@ allprojects {
   }
 }
 ```
-Then add this to your app module's build.gradle
+Then add this to your app module's `build.gradle`
 ```gradle
 implementation 'com.github.sarsamurmu:AdaptiveIconBitmap:$commitHash'
 ```
 Replace `$commitHash` with latest commit hash. Latest is ![Jitpack Badge](https://jitpack.io/v/sarsamurmu/AdaptiveIconBitmap.svg)
 
-## Simple Usage
-You can Use it like this, main stuff
+## Rendering Bitmap
+You can use it like this
 ```java
-AdaptiveIcon myIcon = new AdaptiveIcon();
-myIcon.setForeground(FOREGROUND_DRAWABLE);
-myIcon.setBackground(BACKGROUND_DRAWABLE);
+AdaptiveIcon adaptiveIcon = new AdaptiveIcon();
+adaptiveIcon.setForeground(FOREGROUND_DRAWABLE);
+adaptiveIcon.setBackground(BACKGROUND_DRAWABLE);
 
 // Rendering Bitmap
-Bitmap renderedIcon = myIcon.render();
+Bitmap renderedIcon = adaptiveIcon.render();
 ```
 You can use Shorthand for Setting up the Drawables
 ```java
-myIcon.setDrawables(FOREGROUND_DRAWABLE, BACKGROUND_DRAWABLE);
+adaptiveIcon.setDrawables(FOREGROUND_DRAWABLE, BACKGROUND_DRAWABLE);
+```
+or if you've AdaptiveIconDrawable, you can set like this
+```java
+adaptiveIcon.setDrawable(adaptiveIconDrawable)
 ```
 
-Setting Path
+## Setting Path
+This sets the mask to use in adaptive icon.
 ```java
-myIcon.setPath(path);
+adaptiveIcon.setPath(path);
 
-// From Predefined Paths
-myIcon.setPath(AdaptiveIcon.PATH_CIRCLE);
-myIcon.setPath(AdaptiveIcon.PATH_SQUIRCLE);
-myIcon.setPath(AdaptiveIcon.PATH_ROUNDED_SQUARE);
-myIcon.setPath(AdaptiveIcon.PATH_SQUARE);
-myIcon.setPath(AdaptiveIcon.PATH_TEARDROP);
+// From predefined paths
+adaptiveIcon.setPath(AdaptiveIcon.PATH_CIRCLE);
+adaptiveIcon.setPath(AdaptiveIcon.PATH_SQUIRCLE);
+adaptiveIcon.setPath(AdaptiveIcon.PATH_ROUNDED_SQUARE);
+adaptiveIcon.setPath(AdaptiveIcon.PATH_SQUARE);
+adaptiveIcon.setPath(AdaptiveIcon.PATH_TEARDROP);
 
 // Custom Path
-myIcon.setPath("M 50,0 C 10,0 0,10 0,50 C 0,90 10,100 50,100 C 90,100 100,90 100,50 C 100,10 90,0 50,0 Z");
+adaptiveIcon.setPath("M 50,0 C 10,0 0,10 0,50 C 0,90 10,100 50,100 C 90,100 100,90 100,50 C 100,10 90,0 50,0 Z");
 ```
 
-Setting Scale
+## Setting Scale
 ```java
-myIcon.setScale(double);
+adaptiveIcon.setScale(double);
 
 // The Large the Number, The Small the Icon
-myIcon.setScale(0.6); // Default
+adaptiveIcon.setScale(0.6); // Default
 
 // Max is 1.9 and Min is 0.1
 ```
 
-Setting Size
+## Setting Size
 ```java
-myIcon.setSize(int width, int height);
+adaptiveIcon.setSize(int size);
 
 
 // Default
-myIcon.setSize(432, 432);
+adaptiveIcon.setSize(256);
 ```
 
-Nothing More
+End.
