@@ -29,32 +29,27 @@ public class MainActivity extends AppCompatActivity {
         Drawable iconDrawable = getApplicationContext().getDrawable(R.drawable.my_adaptive_icon);
         AdaptiveIconDrawable adaptiveIconDrawable = ((AdaptiveIconDrawable) iconDrawable);
 
-        ImageView squareIcon = (ImageView) findViewById(R.id.square);
+        ImageView squareIcon = findViewById(R.id.square);
         loadIconToView(adaptiveIconDrawable, AdaptiveIcon.PATH_SQUARE, squareIcon);
 
-        ImageView roundedSquareIcon = (ImageView) findViewById(R.id.rounded_square);
+        ImageView roundedSquareIcon = findViewById(R.id.rounded_square);
         loadIconToView(adaptiveIconDrawable, AdaptiveIcon.PATH_ROUNDED_SQUARE, roundedSquareIcon);
 
-        ImageView squircleIcon = (ImageView) findViewById(R.id.squircle);
+        ImageView squircleIcon = findViewById(R.id.squircle);
         loadIconToView(adaptiveIconDrawable, AdaptiveIcon.PATH_SQUIRCLE, squircleIcon);
 
-        ImageView circleIcon = (ImageView) findViewById(R.id.circle);
+        ImageView circleIcon = findViewById(R.id.circle);
         loadIconToView(adaptiveIconDrawable, AdaptiveIcon.PATH_CIRCLE, circleIcon);
 
-        ImageView teardropIcon = (ImageView) findViewById(R.id.teardrop);
+        ImageView teardropIcon = findViewById(R.id.teardrop);
         loadIconToView(adaptiveIconDrawable, AdaptiveIcon.PATH_TEARDROP, teardropIcon);
     }
 
     public void loadIconToView(AdaptiveIconDrawable drawable, int path, ImageView view) {
-        Drawable foregroundDrawable = drawable.getForeground();
-        Drawable backgroundDrawable = drawable.getBackground();
-
-        AdaptiveIcon iconBitmap = new AdaptiveIcon()
-                                        .setDrawable(drawable)
-                                        .setPath(path);
-
-        view.setImageBitmap(iconBitmap.render());
-        //view.setImageBitmap(AdaptiveIcon.render(drawable, getApplicationContext()));
+        view.setImageBitmap(new AdaptiveIcon()
+                .setDrawable(drawable)
+                .setPath(path)
+                .render());
     }
 
     public void saveImages(View v) {
@@ -69,13 +64,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public Bitmap genBitmap(AdaptiveIconDrawable drawable, int path) {
-        AdaptiveIcon iconBitmap = new AdaptiveIcon()
+
+        return new AdaptiveIcon()
                 .setDrawable(drawable)
                 .setPath(path)
-                .setSize(10, 10);
-
-        return iconBitmap.render();
-        //return AdaptiveIcon.render(drawable, getApplicationContext());
+                .render();
     }
 
     private void saveImage(Bitmap finalBitmap, String image_name) {
