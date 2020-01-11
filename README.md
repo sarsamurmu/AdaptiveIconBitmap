@@ -32,13 +32,13 @@ adaptiveIcon.setBackground(BACKGROUND_DRAWABLE);
 // Rendering Bitmap
 Bitmap renderedIcon = adaptiveIcon.render();
 ```
-You can use Shorthand for Setting up the Drawables
+You can use shorthand for setting up the drawables
 ```java
 adaptiveIcon.setDrawables(FOREGROUND_DRAWABLE, BACKGROUND_DRAWABLE);
 ```
 or if you've AdaptiveIconDrawable, you can set like this
 ```java
-adaptiveIcon.setDrawable(adaptiveIconDrawable)
+adaptiveIcon.setDrawable(adaptiveIconDrawable);
 ```
 
 ## Setting Path
@@ -68,6 +68,7 @@ adaptiveIcon.setScale(0.6); // Default
 ```
 
 ## Setting Size
+Sets the size of the icon in pixel.
 ```java
 adaptiveIcon.setSize(int size);
 
