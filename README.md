@@ -1,9 +1,9 @@
 # Adaptive Icon Bitmap
 [![Jitpack Badge](https://jitpack.io/v/sarsamurmu/AdaptiveIconBitmap.svg)](https://jitpack.io/#sarsamurmu/AdaptiveIconBitmap)
 
-Get merged bitmap from adaptive icon's foreground and background drawables.
+Get the merged bitmap from adaptive icon's foreground and background drawables.
 
-It's inspired from [AdaptiveIconView](https://github.com/fennifith/AdaptiveIconView).
+It is inspired from [AdaptiveIconView](https://github.com/fennifith/AdaptiveIconView).
 
 # Usage
 ## Setup
@@ -11,38 +11,45 @@ Make sure your root `build.gradle` has this
 ```gradle
 allprojects {
   repositories {
-    ...
+    // ...
+
     maven { url 'https://jitpack.io' }
   }
 }
 ```
-Then add this to your app module's `build.gradle`
+Then add this as a dependency to your project `build.gradle`
 ```gradle
-implementation 'com.github.sarsamurmu:AdaptiveIconBitmap:$version'
+dependencies {
+    // ...
+
+    implementation 'com.github.sarsamurmu:AdaptiveIconBitmap:$version'
+}
 ```
-Replace `$version` with latest version or commit hash. Latest is ![Jitpack Badge](https://jitpack.io/v/sarsamurmu/AdaptiveIconBitmap.svg)
+Replace `$version` with the latest version or commit hash.
+Latest version is ![Jitpack Badge](https://jitpack.io/v/sarsamurmu/AdaptiveIconBitmap.svg)
 
 ## Rendering Bitmap
 You can use it like this
 ```java
+// Create a AdaptiveIcon instance
 AdaptiveIcon adaptiveIcon = new AdaptiveIcon();
+// Set drawables
 adaptiveIcon.setForeground(FOREGROUND_DRAWABLE);
 adaptiveIcon.setBackground(BACKGROUND_DRAWABLE);
 
-// Rendering Bitmap
+// Render the icon
 Bitmap renderedIcon = adaptiveIcon.render();
 ```
-You can use shorthand for setting up the drawables
+You can also use shorthand for setting up the drawables
 ```java
 adaptiveIcon.setDrawables(FOREGROUND_DRAWABLE, BACKGROUND_DRAWABLE);
 ```
-or if you've AdaptiveIconDrawable, you can set like this
+or if you've `AdaptiveIconDrawable`, you can set the drawables like this
 ```java
 adaptiveIcon.setDrawable(adaptiveIconDrawable);
 ```
 
 ## Setting Path
-This sets the mask to use in adaptive icons
 ```java
 adaptiveIcon.setPath(path);
 
@@ -58,9 +65,9 @@ adaptiveIcon.setPath("M 50,0 C 10,0 0,10 0,50 C 0,90 10,100 50,100 C 90,100 100,
 ```
 
 ## Setting Size
-Sets the size of the icon in pixel
 ```java
-adaptiveIcon.setSize(int size);
+adaptiveIcon.setSize(size);
+// Size is in pixel
 
 // Default
 adaptiveIcon.setSize(256);
