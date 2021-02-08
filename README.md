@@ -3,7 +3,7 @@
 
 Get merged bitmap from adaptive icon's foreground and background drawables.
 
-It's modified from [AdaptiveIconView](https://github.com/fennifith/AdaptiveIconView).
+It's inspired from [AdaptiveIconView](https://github.com/fennifith/AdaptiveIconView).
 
 # Usage
 ## Setup
