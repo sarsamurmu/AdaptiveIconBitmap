@@ -11,11 +11,10 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.AdaptiveIconDrawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.ThumbnailUtils;
 
-import sarsamurmu.adaptiveicon.utils.ImageUtils;
-import sarsamurmu.adaptiveicon.utils.PathUtils;
+import androidx.core.graphics.PathParser;
 
 public class AdaptiveIcon {
     public static final int PATH_CIRCLE = 0;
@@ -24,26 +23,23 @@ public class AdaptiveIcon {
     public static final int PATH_SQUARE = 3;
     public static final int PATH_TEARDROP = 4;
 
-    Drawable fgDrawable, bgDrawable;
-    Bitmap scaledBgBitmap, scaledFgBitmap, bgBitmap, fgBitmap;
-    Path path, scaledPath;
-    Rect pathSize;
-    Paint paint;
+    private Drawable fgDrawable, bgDrawable;
+    private Bitmap bgBitmap, fgBitmap;
+    private Path path;
+    private Rect pathSize;
+    private final Paint paint;
 
-    private double scale = 1.0;
+    private double scale;
     private int size;
-    private float fgScale = 1;
-    private float offsetX, offsetY;
 
     public AdaptiveIcon() {
         paint = new Paint();
         paint.setAntiAlias(true);
         paint.setFilterBitmap(true);
 
-        setScale(0.6);
+        setScale(0.66);
         setPath(PATH_CIRCLE);
-
-        size = 256;
+        setSize(256);
     }
 
     public AdaptiveIcon setForeground(Drawable drawable) {
@@ -79,18 +75,6 @@ public class AdaptiveIcon {
         return this;
     }
 
-    public Bitmap getFgBitmap() {
-        if (fgBitmap == null)
-            fgBitmap = ImageUtils.drawableToBitmap(fgDrawable);
-        return fgBitmap;
-    }
-
-    public Bitmap getBgBitmap() {
-        if (bgBitmap == null)
-            bgBitmap = ImageUtils.drawableToBitmap(bgDrawable);
-        return bgBitmap;
-    }
-
     public AdaptiveIcon setPath(int pathType) {
         path = new Path();
         pathSize = new Rect(0, 0, 50, 50);
@@ -120,20 +104,46 @@ public class AdaptiveIcon {
     }
 
     public AdaptiveIcon setPath(String pathData) {
-        path = PathUtils.createPathFromPathData(pathData);
+        path = PathParser.createPathFromPathData(pathData);
         pathSize = new Rect(0, 0, 100, 100);
         return this;
     }
 
-    private Boolean isPrepared() {
-        if (path != null && pathSize != null) {
-            return true;
+    private static Bitmap drawableToBitmap(Drawable drawable) {
+        if (drawable == null) return null;
+
+        Bitmap bitmap;
+
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if (bitmapDrawable.getBitmap() != null)
+                return bitmapDrawable.getBitmap();
         }
-        return false;
+
+        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0)
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+        else
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
     }
 
-    private Boolean isScaled(int width, int height) {
-        return scaledBgBitmap != null && (getFgBitmap() == null || scaledFgBitmap != null) && scaledPath != null;
+    public Bitmap getFgBitmap() {
+        if (fgBitmap == null) {
+            fgBitmap = drawableToBitmap(fgDrawable);
+        }
+        return fgBitmap;
+    }
+
+    public Bitmap getBgBitmap() {
+        if (bgBitmap == null) {
+            bgBitmap = drawableToBitmap(bgDrawable);
+        }
+        return bgBitmap;
     }
 
     private Path getScaledPath(Path origPath, Rect origRect, int width, int height) {
@@ -149,74 +159,34 @@ public class AdaptiveIcon {
         return newPath;
     }
 
-    private Bitmap getScaledBitmap(Bitmap bitmap, int width, int height) {
-        if (scale <= 1)
-            return ThumbnailUtils.extractThumbnail(bitmap, (int) ((2 - scale) * width), (int) ((2 - scale) * height));
-        else if (bitmap.getWidth() > 1 && bitmap.getHeight() > 1) {
-            int widthMargin = (int) ((scale - 1) * width);
-            int heightMargin = (int) ((scale - 1) * height);
-
-            if (widthMargin > 0 && heightMargin > 0) {
-                Bitmap source = ThumbnailUtils.extractThumbnail(bitmap, (int) ((2 - scale) * width), (int) ((2 - scale) * height));
-                int dWidth = width + widthMargin;
-                int dHeight = height + heightMargin;
-                bitmap = Bitmap.createBitmap(dWidth, dHeight, bitmap.getConfig());
-                Canvas canvas = new Canvas(bitmap);
-                canvas.drawBitmap(source, (dWidth - source.getWidth()) / 2, (dHeight - source.getHeight()) / 2, new Paint());
-                return bitmap;
-            }
-        } else if (bitmap.getWidth() > 0 && bitmap.getHeight() > 0)
-            return ThumbnailUtils.extractThumbnail(bitmap, width, height);
-
-        return null;
+    public Bitmap scaleBitmap(Bitmap bmp) {
+        double newHeight = size / scale;
+        double newWidth = bmp.getWidth() * (newHeight / bmp.getHeight());
+        return Bitmap.createScaledBitmap(bmp, (int) newWidth, (int) newHeight, true);
     }
 
     public Bitmap render() {
-        Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
+        int wholeSize = (int) (size / scale);
 
-        if (isPrepared()) {
-            if (!isScaled(canvas.getWidth(), canvas.getHeight())) {
-                scaledPath = getScaledPath(path, pathSize, size, size);
-                if (getBgBitmap() != null) {
-                    scaledBgBitmap = getScaledBitmap(getBgBitmap(), size, size);
-                    scaledFgBitmap = getScaledBitmap(getFgBitmap(), size, size);
-                } else if (getFgBitmap() != null)
-                    scaledFgBitmap = ThumbnailUtils.extractThumbnail(getFgBitmap(), size, size);
-            }
+        Bitmap mergedBmp = Bitmap.createBitmap(wholeSize, wholeSize, Bitmap.Config.ARGB_8888);
+        Canvas mergedBmpCanvas = new Canvas(mergedBmp);
+        Bitmap bgBmp = scaleBitmap(getBgBitmap());
+        Bitmap fgBmp = scaleBitmap(getFgBitmap());
+        mergedBmpCanvas.drawBitmap(bgBmp, (int) ((wholeSize - bgBmp.getWidth()) / 2), (int) ((wholeSize - bgBmp.getHeight()) / 2), paint);
+        mergedBmpCanvas.drawBitmap(fgBmp, (int) ((wholeSize - fgBmp.getWidth()) / 2), (int) ((wholeSize - fgBmp.getHeight()) / 2), paint);
 
-            if (scaledBgBitmap != null) {
-                float dx = size * offsetX * 0.066f;
-                float dy = size * offsetY * 0.066f;
-                if (scaledBgBitmap.getWidth() > size && scaledBgBitmap.getHeight() > size)
-                    canvas.scale(2 - ((fgScale + 1) / 2), 2 - ((fgScale + 1) / 2), size / 2, size / 2);
-                else {
-                    dx = 0;
-                    dy = 0;
-                }
+        int cropSize = (int) (wholeSize * scale);
+        int cropPos = (wholeSize - cropSize) / 2;
+        Bitmap croppedBmp = Bitmap.createBitmap(mergedBmp, cropPos, cropPos, cropSize, cropSize);
 
-                float marginX = (scaledBgBitmap.getWidth() - size) / 2;
-                float marginY = (scaledBgBitmap.getHeight() - size) / 2;
-                canvas.drawBitmap(scaledBgBitmap, dx - marginX, dy - marginY, paint);
-            }
+        Path scaledPath = getScaledPath(path, pathSize, croppedBmp.getWidth(), croppedBmp.getHeight());
+        Paint bitmapPaint = new Paint();
+        bitmapPaint.setAntiAlias(true);
+        bitmapPaint.setShader(new BitmapShader(croppedBmp, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT));
+        Bitmap iconBitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+        Canvas iconCanvas = new Canvas(iconBitmap);
+        iconCanvas.drawPath(scaledPath, bitmapPaint);
 
-            if (scaledFgBitmap != null) {
-                canvas.scale(2 - fgScale, 2 - fgScale, size / 2, size / 2);
-                float dx = ((size - scaledFgBitmap.getWidth()) / 2) + (size * offsetX * 0.188f);
-                float dy = ((size - scaledFgBitmap.getHeight()) / 2) + (size * offsetY * 0.188f);
-                canvas.drawBitmap(scaledFgBitmap, dx, dy, paint);
-                canvas.scale(fgScale + 1, fgScale + 1, size / 2, size / 2);
-            }
-
-            Paint bitmapPaint = new Paint();
-            bitmapPaint.setAntiAlias(true);
-            bitmapPaint.setShader(new BitmapShader(bitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT));
-            Bitmap iconBitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
-            Canvas iconCanvas = new Canvas(iconBitmap);
-            iconCanvas.drawPath(scaledPath, bitmapPaint);
-
-            return iconBitmap;
-        }
-        return null;
+        return iconBitmap;
     }
 }

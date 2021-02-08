@@ -18,9 +18,9 @@ allprojects {
 ```
 Then add this to your app module's `build.gradle`
 ```gradle
-implementation 'com.github.sarsamurmu:AdaptiveIconBitmap:$commitHash'
+implementation 'com.github.sarsamurmu:AdaptiveIconBitmap:$version'
 ```
-Replace `$commitHash` with latest commit hash. Latest is ![Jitpack Badge](https://jitpack.io/v/sarsamurmu/AdaptiveIconBitmap.svg)
+Replace `$version` with latest version or commit hash. Latest is ![Jitpack Badge](https://jitpack.io/v/sarsamurmu/AdaptiveIconBitmap.svg)
 
 ## Rendering Bitmap
 You can use it like this
@@ -42,7 +42,7 @@ adaptiveIcon.setDrawable(adaptiveIconDrawable);
 ```
 
 ## Setting Path
-This sets the mask to use in adaptive icon.
+This sets the mask to use in adaptive icons
 ```java
 adaptiveIcon.setPath(path);
 
@@ -57,24 +57,11 @@ adaptiveIcon.setPath(AdaptiveIcon.PATH_TEARDROP);
 adaptiveIcon.setPath("M 50,0 C 10,0 0,10 0,50 C 0,90 10,100 50,100 C 90,100 100,90 100,50 C 100,10 90,0 50,0 Z");
 ```
 
-## Setting Scale
-```java
-adaptiveIcon.setScale(double);
-
-// The Large the Number, The Small the Icon
-adaptiveIcon.setScale(0.6); // Default
-
-// Max is 1.9 and Min is 0.1
-```
-
 ## Setting Size
-Sets the size of the icon in pixel.
+Sets the size of the icon in pixel
 ```java
 adaptiveIcon.setSize(int size);
-
 
 // Default
 adaptiveIcon.setSize(256);
 ```
-
-End.

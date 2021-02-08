@@ -1,6 +1,7 @@
 package example.sarsamurmu.adaptiveiconbitmap;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.AdaptiveIconDrawable;
@@ -26,34 +27,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadIcon() {
-        Drawable iconDrawable = getApplicationContext().getDrawable(R.drawable.my_adaptive_icon);
+        Drawable iconDrawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.precision_icon);
+//        Drawable iconDrawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.app_icon);
         AdaptiveIconDrawable adaptiveIconDrawable = ((AdaptiveIconDrawable) iconDrawable);
 
         ImageView squareIcon = findViewById(R.id.square);
-        loadIconToView(adaptiveIconDrawable, AdaptiveIcon.PATH_SQUARE, squareIcon);
+        squareIcon.setImageBitmap(genBitmap(adaptiveIconDrawable, AdaptiveIcon.PATH_SQUARE));
 
         ImageView roundedSquareIcon = findViewById(R.id.rounded_square);
-        loadIconToView(adaptiveIconDrawable, AdaptiveIcon.PATH_ROUNDED_SQUARE, roundedSquareIcon);
+        roundedSquareIcon.setImageBitmap(genBitmap(adaptiveIconDrawable, AdaptiveIcon.PATH_ROUNDED_SQUARE));
 
         ImageView squircleIcon = findViewById(R.id.squircle);
-        loadIconToView(adaptiveIconDrawable, AdaptiveIcon.PATH_SQUIRCLE, squircleIcon);
+        squircleIcon.setImageBitmap(genBitmap(adaptiveIconDrawable, AdaptiveIcon.PATH_SQUIRCLE));
 
         ImageView circleIcon = findViewById(R.id.circle);
-        loadIconToView(adaptiveIconDrawable, AdaptiveIcon.PATH_CIRCLE, circleIcon);
+        circleIcon.setImageBitmap(genBitmap(adaptiveIconDrawable, AdaptiveIcon.PATH_CIRCLE));
 
         ImageView teardropIcon = findViewById(R.id.teardrop);
-        loadIconToView(adaptiveIconDrawable, AdaptiveIcon.PATH_TEARDROP, teardropIcon);
-    }
-
-    public void loadIconToView(AdaptiveIconDrawable drawable, int path, ImageView view) {
-        view.setImageBitmap(new AdaptiveIcon()
-                .setDrawable(drawable)
-                .setPath(path)
-                .render());
+        teardropIcon.setImageBitmap(genBitmap(adaptiveIconDrawable, AdaptiveIcon.PATH_TEARDROP));
     }
 
     public void saveImages(View v) {
-        Drawable iconDrawable = getApplicationContext().getDrawable(R.drawable.my_adaptive_icon);
+        Drawable iconDrawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.app_icon);
         AdaptiveIconDrawable adaptiveIconDrawable = ((AdaptiveIconDrawable) iconDrawable);
 
         saveImage(genBitmap(adaptiveIconDrawable, AdaptiveIcon.PATH_SQUARE), "square");
@@ -64,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public Bitmap genBitmap(AdaptiveIconDrawable drawable, int path) {
-
         return new AdaptiveIcon()
                 .setDrawable(drawable)
                 .setPath(path)
@@ -72,18 +66,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveImage(Bitmap finalBitmap, String image_name) {
+        String TAG = "AdaptiveIconBitmap-Sample";
+
         String root = Environment.getExternalStorageDirectory().toString();
         File myDir = new File(root + "/AdaptiveIconBitmap");
-        String fname = image_name + ".png";
-        File file = new File(myDir, fname);
-        Log.i("LOAD", root + "/AdaptiveIconBitmap/" + fname);
+        String fileName = image_name + ".png";
+        File file = new File(myDir, fileName);
         try {
+            if (!file.exists()) {
+                if (!file.createNewFile()) {
+                    Log.e(TAG, "Unable to create file: " + fileName);
+                }
+            }
             FileOutputStream out = new FileOutputStream(file);
             finalBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
             out.flush();
             out.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, Log.getStackTraceString(e));
         }
     }
 }

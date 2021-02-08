@@ -78,6 +78,13 @@
                 android:layout_height="120dp"
                 android:layout_weight="1"
                 tools:srcCompat="@tools:sample/avatars[0]" />
+
+            <ImageView
+                android:id="@+id/custom"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                tools:srcCompat="@tools:sample/avatars[0]" />
         </LinearLayout>
     </LinearLayout>
 
