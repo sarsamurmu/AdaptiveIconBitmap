@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -13,6 +14,10 @@ import android.graphics.Shader;
 import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
+import android.graphics.drawable.shapes.RectShape;
+import android.os.Build;
 
 import androidx.core.graphics.PathParser;
 
@@ -58,10 +63,30 @@ public class AdaptiveIcon {
         return this;
     }
 
+    private Drawable emptyDrawable() {
+        ShapeDrawable sd = new ShapeDrawable(new OvalShape());
+        sd.getPaint().setColor(Color.TRANSPARENT);
+        sd.setIntrinsicHeight(256);
+        sd.setIntrinsicWidth(256);
+        return sd;
+    }
+
     @TargetApi(26)
     public AdaptiveIcon setDrawable(AdaptiveIconDrawable drawable) {
         fgDrawable = drawable.getForeground();
         bgDrawable = drawable.getBackground();
+        if (fgDrawable == null && bgDrawable == null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            fgDrawable = drawable.getMonochrome();
+            bgDrawable = emptyDrawable();
+        }
+
+        if (fgDrawable == null) {
+            fgDrawable = emptyDrawable();
+        }
+        if (bgDrawable == null) {
+            bgDrawable = emptyDrawable();
+        }
+
         return this;
     }
 
