@@ -197,9 +197,21 @@ public class AdaptiveIcon {
         Canvas mergedBmpCanvas = new Canvas(mergedBmp);
         Bitmap bgBmp = scaleBitmap(getBgBitmap());
         Bitmap fgBmp = scaleBitmap(getFgBitmap());
-        mergedBmpCanvas.drawBitmap(bgBmp, (int) ((wholeSize - bgBmp.getWidth()) / 2), (int) ((wholeSize - bgBmp.getHeight()) / 2), paint);
-        mergedBmpCanvas.drawBitmap(fgBmp, (int) ((wholeSize - fgBmp.getWidth()) / 2), (int) ((wholeSize - fgBmp.getHeight()) / 2), paint);
 
+        Matrix bgMatrix = new Matrix();
+        bgMatrix.setTranslate(
+            (wholeSize - bgBmp.getWidth()) / 2f,
+            (wholeSize - bgBmp.getHeight()) / 2f
+        );
+        mergedBmpCanvas.drawBitmap(bgBmp, bgMatrix, paint);
+    
+        Matrix fgMatrix = new Matrix();
+        fgMatrix.setTranslate(
+            (wholeSize - fgBmp.getWidth()) / 2f,
+            (wholeSize - fgBmp.getHeight()) / 2f
+        );
+        mergedBmpCanvas.drawBitmap(fgBmp, fgMatrix, paint);
+    
         int cropSize = (int) (wholeSize * scale);
         int cropPos = (wholeSize - cropSize) / 2;
         Bitmap croppedBmp = Bitmap.createBitmap(mergedBmp, cropPos, cropPos, cropSize, cropSize);
